@@ -1,0 +1,90 @@
+.game-controls
+  user-select: none
+  position: absolute
+  z-index: 2
+  display: flex
+  padding: 20px
+  box-sizing: border-box
+
+  &.status
+    padding-top: 0
+
+  &.touch-controls
+    right: 0
+    left: auto
+    bottom: 400px
+    opacity: 0
+    transition: opacity 0.2s, bottom 0.2s
+    &.show
+      opacity: 1
+      bottom: 0
+
+  .me
+    color: #fff
+    display: flex
+    align-items: center
+    .button
+      margin-right: 5px
+
+  &.status
+    top: 85px
+    border: none
+    background: none
+    .player-name, .turn-title
+      text-shadow: 1px 2px 2px #000
+      font-weight: normal
+      padding: 0 7px
+      margin: 0 3px
+      border-radius: 5px
+    .turn-title
+      margin-left: 15px
+
+  .logo
+    margin-right: 20px
+    img
+      height: 40px
+
+
+
+  a.item
+    text-align: center
+
+  a.item, input.item
+    width: 100px
+    color: #000 !important
+    background: #00c272
+
+  input.item
+    padding-top: 9px
+
+    &:focus
+      background: #fff
+
+  a
+    color: #fff
+  a:hover
+    background: #ccc
+
+  &.online
+    top: 85px
+    display: block
+    padding-top: 0
+
+    .item
+      margin-bottom: 3px
+
+  &.debug
+    top: auto
+    left: 250px
+    display: block
+    bottom: 11px
+
+  &.pairs
+    top: auto
+    bottom: 0
+    left: auto
+    border: none
+    background: none
+    color: #fff
+    display: block
+

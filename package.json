@@ -1,0 +1,29 @@
+{
+  "name": "vue-terbeli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@kyvg/vue3-notification": "^3.2.1",
+    "axios": "^1.7.2",
+    "rpc-websockets": "^7.11.2",
+    "three": "^0.166.1",
+    "vue": "^3.4.29",
+    "vue3-toastify": "^0.2.2",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "node-sass": "^9.0.0",
+    "sass": "^1.77.8",
+    "sass-loader": "^14.2.1",
+    "scss": "^0.2.4",
+    "scss-loader": "^0.0.1",
+    "vite": "^5.3.1"
+  }
+}
