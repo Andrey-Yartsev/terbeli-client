@@ -1,5 +1,6 @@
 <template>
   <div class="game-controls">
+    <a href="/how-to-play" class="menu">Как играть</a>
     <div class="me" :style="{
     opacity: serverConnected ? 1 : 0
   }">
@@ -79,9 +80,6 @@ export default {
       }, 100)
     },
     registerPlayer() {
-      if (this.name.substring(0, 1) === 'А') {
-        this.toast('Отличное имя, назовёшь своего сына так же?')
-      }
       this.$emit('registerPlayer', this.name)
     },
     leaveGame() {

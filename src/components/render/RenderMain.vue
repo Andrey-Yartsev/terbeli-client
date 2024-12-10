@@ -10,15 +10,10 @@ import {TextGeometry} from 'three/examples/jsm/geometries/TextGeometry.js'
 import {FontLoader} from 'three/examples/jsm/loaders/FontLoader.js'
 import toast from '@/mixins/toast.js'
 import ColorGUIHelper from './ColorGUIHelper.js'
+import isTouchDevice from "@/mixins/isTouchDevice.js";
 
 export default {
-  mixins: [toast],
-  props: {
-    isTouchDevice: {
-      type: Boolean,
-      default: false
-    }
-  },
+  mixins: [toast, isTouchDevice],
   // scene: null,
   // sceneInitialized: false,
   // renderer: null,
@@ -29,7 +24,9 @@ export default {
   // movingRing: null,
   // pinsState: {},
   // ringOneStepYShift: 0.5,
-
+  props: {
+    showPinDigits: false
+  },
   data() {
     return {
       isWin: false,
@@ -109,32 +106,33 @@ export default {
       mesh.userData.pinN = this.globalPinN
       mesh.userData.ringsCount = 0
       this.scene.add(mesh)
-      // this.addText(xOffset, zOffset, globalPinN) // for debug
+      if (this.showPinDigits) {
+        this.addText(xOffset, zOffset, this.globalPinN)
+      }
       this.globalPinN++
       return mesh
     },
     addText(xOffset, zOffset, text) {
       const loader = new FontLoader()
-      loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-
+      loader.load('./font.json', font => {
         const x = 0 + xOffset + 0, y = 10 / 2 + 6, z = 0 + zOffset
-        const textGeo = new TextGeometry((text - 1) + '', {
+        const textGeo = new TextGeometry((text) + '', {
           font,
-          size: 0.5,
-          height: 0.3,
+          size: 0.7,
+          height: 0.05,
           curveSegments: 12,
           bevelEnabled: false,
           bevelThickness: 0.1,
           bevelSize: 0.1,
           bevelSegments: 0.1
         })
-        const txtMat = new THREE.MeshPhongMaterial({color: '#f0f'})
+        const txtMat = new THREE.MeshPhongMaterial({color: '#000'})
         const mesh = new THREE.Mesh(textGeo, txtMat)
         mesh.position.x = x
-        mesh.position.y = y
+        mesh.position.y = y - 2
         mesh.position.z = z
         mesh.rotateY(5)
-        const obj = this.scene.add(mesh)
+        this.scene.add(mesh)
       })
     },
     canPutRingNotHas4(pinN) {
@@ -325,7 +323,6 @@ export default {
     },
     checkCurrentPlayerWins() {
       const state = Object.values(this.pinsState)
-      console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', state)
       const debug = txt => {
         console.log(txt)
       }
@@ -657,6 +654,7 @@ export default {
       this.globalPinN = 1
       this.userDragging = false
       this.putRingFromWs = true
+      this.isWin = false
     },
     initScene() {
       const canvas = document.getElementById('canvas')

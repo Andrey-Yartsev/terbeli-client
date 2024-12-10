@@ -32,6 +32,7 @@ export default {
       })
     },
     addedRing(pinN) {
+      console.log('send to server addedRing');
       this.send({
         type: 'addedRing',
         data: {

@@ -58,9 +58,6 @@ export default {
       })
     },
     registerPlayer() {
-      if (this.name.substring(0, 1) === 'А') {
-        this.toast('Отличное имя, назовёшь своего сына так же?')
-      }
       this.$emit('registerPlayer', this.name)
     },
   },
