@@ -1,14 +1,20 @@
+.game-controls-group
+  width: 100%
+  position: absolute
+  z-index: 2
+
 .game-controls
   width: 100%
   user-select: none
-  position: absolute
-  z-index: 2
+
+
   display: flex
   padding: 20px
   box-sizing: border-box
 
-  &.status
-    padding-top: 0
+  &.top
+    background: rgba(0, 0, 0, 0.1)
+    margin-bottom: 15px
 
   &.touch-controls
     right: 0
@@ -28,7 +34,7 @@
       margin-right: 5px
 
   &.status
-    top: 85px
+    padding-top: 0
     border: none
     background: none
     .player-name, .turn-title
@@ -39,6 +45,10 @@
       border-radius: 5px
     .turn-title
       margin-left: 15px
+      transition: opacity 0.5s
+      opacity: 1
+      &.hide
+        opacity: 0
 
   .logo
     margin-right: 20px
@@ -81,11 +91,15 @@
     bottom: 11px
 
   &.pairs
+    position: absolute
+    z-index: 2
+
     top: auto
     bottom: 0
     left: auto
     border: none
     background: none
     color: #fff
+    text-shadow: 1px 2px 2px #000
     display: block
 

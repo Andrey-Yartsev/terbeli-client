@@ -24,8 +24,10 @@ export default {
   // movingRing: null,
   // pinsState: {},
   // ringOneStepYShift: 0.5,
+  //sceneGeometries: [],
   props: {
-    showPinDigits: false
+    showPinDigits: false,
+    demoMode: false
   },
   data() {
     return {
@@ -83,12 +85,15 @@ export default {
       mesh.rotation.x = Math.PI * -.5
       this.scene.add(mesh)
     },
-    addPins() {
+    initPinsState() {
       this.pinsState = {}
       for (let i = 1; i <= 16; i++) {
         // заполняем состояние штырей пустыми массивами
         this.pinsState[i] = []
       }
+    },
+    addPins() {
+      this.initPinsState()
       for (let i = 1; i <= 16; i++) {
         const coords = this.getPinCoords(i)
         this.addPin(coords[0], coords[1])
@@ -181,6 +186,7 @@ export default {
       mesh.position.set(0 + xOffset, 10 / 2 + 7, 0 + zOffset)
       mesh.userData.pinN = pinN
       this.scene.add(mesh)
+      this.sceneRings.push(mesh)
       return mesh
     },
     addTouchPinPointer(pinN) {
@@ -388,7 +394,7 @@ export default {
         return false
       }
       const diagonalHorizontal = () => {
-        for (let i = 0; i<4; i++) {
+        for (let i = 0; i < 4; i++) {
           if (
               state[0][i] === checkingPlayer &&
               state[5][i] === checkingPlayer &&
@@ -534,6 +540,7 @@ export default {
     },
     addLight() {
       {
+
         const color = 0xFFFFFF
         const intensity = 1.5
         let light = new THREE.DirectionalLight(color, intensity)
@@ -541,6 +548,7 @@ export default {
         light.target.position.set(5, 0, 0)
         this.scene.add(light)
         this.scene.add(light.target)
+        light.dispose()
 
         // const gui = new GUI()
         // gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color')
@@ -628,7 +636,9 @@ export default {
         return
       }
       this.raycaster.setFromCamera(this.pointer, this.camera)
-      this.renderTickIntersection()
+      if (this.demoMode === false) {
+        this.renderTickIntersection()
+      }
       if (this.resizeRendererToDisplaySize()) {
         const canvas = this.renderer.domElement
         this.camera.aspect = canvas.clientWidth / canvas.clientHeight
@@ -709,6 +719,13 @@ export default {
       //   this.finish()
       // }, 2000)
     },
+    reset() {
+      for (let i = 0; i < this.sceneRings.length; i++) {
+        this.scene.remove(this.sceneRings[i])
+      }
+      this.initPinsState()
+      this.isWin = false
+    },
     finish() {
       this.allowRender = false
       this.isWin = false
@@ -727,6 +744,9 @@ export default {
       // }
       this.initConfig()
     }
+  },
+  created() {
+    this.sceneRings = []
   },
   async mounted() {
     // const r = await fetch('https://terbeli-server.onrender.com/api/users')

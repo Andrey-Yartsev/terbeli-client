@@ -1,13 +1,10 @@
 <template>
-  <div class="game-controls">
+  <div class="game-controls top">
     <a href="/how-to-play" class="menu">Как играть</a>
     <div class="me" :style="{
     opacity: serverConnected ? 1 : 0
   }">
       <div class="logo"><img src="@/assets/img/logo.png"></div>
-      <div class="status" v-if="!opponentName">
-        {{ readyToPlay.length ? (registeredName + ', выберите соперника') : 'Ожидание сопрника...' }}
-      </div>
       <template v-if="inGame">
         <!--<button class="button" @click.prevent="leaveGame">Уйти</button>-->
         <button class="button" @click.prevent="restart">Переиграть</button>

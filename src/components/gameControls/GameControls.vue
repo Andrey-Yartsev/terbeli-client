@@ -6,15 +6,17 @@
       <!-- <button>Закрыть и покинуть оппонента</button> -->
     </div>
   </div>
+  <div class="game-controls-group">
     <GameControlsMe
         @registerPlayer="registerPlayer"
         @leaveGame="leaveGame"
         @newGame="newGame"
     />
-  <GameControlsStatus />
-  <!-- <div class="game-controls debug"><pre class="item">{{ state }}</pre></div>-->
-  <!-- <div class="game-controls debug" style="left:430px"><pre class="item">{{ getters }}</pre></div>-->
-  <GameControlsOnlinePlayers @playWith="playWith"/>
+    <GameControlsStatus/>
+    <!-- <div class="game-controls debug"><pre class="item">{{ state }}</pre></div>-->
+    <!-- <div class="game-controls debug" style="left:430px"><pre class="item">{{ getters }}</pre></div>-->
+    <GameControlsOnlinePlayers @playWith="playWith"/>
+  </div>
   <GameControlsPairs/>
   <div v-if="showTouchPutRingButton" class="game-controls touch-controls show">
     <button class="button" @click="touchPutRing">Поставить</button>
