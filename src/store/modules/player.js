@@ -5,7 +5,7 @@ const state = {
   },
   online: {},
   pairs: [],
-  startGame: 0,
+  gameStarted: false,
   turnPlayer: 1,
   winPlayerN: 0,
   winPlayerName: null,
@@ -15,6 +15,14 @@ const actions = {
     const i = n - 1
     commit('winPlayerName', getters.currentPair[i])
     commit('setWinPlayer', n)
+  },
+  startGame({commit}) {
+    commit('setGameStarted', true)
+  },
+  leaveGame({commit}) {
+    console.log('JJJ')
+    commit('setName', null)
+    commit('reset')
   }
 }
 const mutations = {
@@ -30,11 +38,10 @@ const mutations = {
   setPairs(state, pairs) {
     state.pairs = pairs
   },
-  startGame(state) {
-    state.startGame++
+  setGameStarted(state, flag) {
+    state.gameStarted = flag
   },
   setTurnPlayer(state, n) {
-    console.trace('setTurnPlayer', n)
     state.turnPlayer = n
   },
   switchPlayerN(state) {
@@ -42,6 +49,11 @@ const mutations = {
   },
   setWinPlayerN(state, n) {
     state.winPlayerN = n
+  },
+  reset(state) {
+    state.turnPlayer = 1
+    state.winPlayerN = 0
+    state.winPlayerName = 1
   }
 }
 const getters = {
@@ -50,16 +62,12 @@ const getters = {
     if (state.user.name) {
       delete online[state.user.name]
     }
-    // online['Дональд Трамп'] = {}
-    // online['Путих'] = {}
-    // online['Jefferson Airplane'] = {}
-    console.log('state.pairs', state.pairs)
-    console.log('online', online)
+    // console.log('online', online)
     state.pairs.forEach(pair => {
       delete online[pair[0]]
       delete online[pair[1]]
     })
-    console.log('online 2', online)
+    // console.log('online 2', online)
     return Object.keys(online)
   },
   currentPair(state) {
@@ -87,13 +95,16 @@ const getters = {
   opponentName(state, getters) {
     return getters.opponent ? getters.opponent.name : null
   },
+  inGame(state, getters) {
+    return state.user.name && getters.opponentName
+  },
   turnPlayerName(state, getters) {
     const i = state.turnPlayer - 1
     return getters.currentPair ? getters.currentPair[i] : null
   },
   isMyTurn(state, getters) {
-    console.log('--------------->', state.user.name, getters.turnPlayerName)
-    return state.user.name === getters.turnPlayerName
+    console.log(getters.turnPlayerName)
+    return getters.turnPlayerName && state.user.name === getters.turnPlayerName
   }
 }
 

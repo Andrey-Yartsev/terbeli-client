@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import rusname from "@/components/rusname.js";
 import toast from '@/mixins/toast.js'
 
 export default {
@@ -52,7 +51,7 @@ export default {
         this.step = 2
         setTimeout(() => {
           this.$refs.name.focus()
-          this.name = rusname()
+          this.name = 'ЗАПОЛНИ'
           accept()
         }, 100)
       })

@@ -27,7 +27,10 @@ export default {
   //sceneGeometries: [],
   props: {
     showPinDigits: false,
-    demoMode: false
+    demoMode: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -172,7 +175,6 @@ export default {
       const coords = this.getPinCoords(pinN)
       // при определении movingRing запускается анмация кольца
       // по её завершению срабатывает логика ringSetComplete
-      console.log('try to add as ', this.turnPlayer)
       this.movingRing = this.addRing(pinN, coords[0], coords[1])
     },
     putRingWs(turnPlayer, pinN) {
@@ -277,7 +279,7 @@ export default {
       const mouse = this.getTouchMouse(event);
       if (this.touchstartMouse) {
         if (this.touchstartMouse.x !== mouse.x || this.touchstartMouse.y !== mouse.y) {
-          console.log('Произошло движение пальца')
+          // console.log('Произошло движение пальца')
           // Произошло движение пальца
           return;
         }
@@ -292,7 +294,7 @@ export default {
         // это не штырь
         return
       }
-      console.log('Pin touch intersects:', intersects);
+      // console.log('Pin touch intersects:', intersects);
       this.addTouchPinPointer(intersects[0].object.userData.pinN)
     },
     getRingFinalY(pinN) {
@@ -314,7 +316,7 @@ export default {
       }
       this.forceTurnPlayer = undefined
 
-      console.log('pushRing', this.movingRing.userData.pinN, turnPlayer)
+      // console.log('pushRing', this.movingRing.userData.pinN, turnPlayer)
       this.pinsState[this.movingRing.userData.pinN].push(turnPlayer)
       if (this.checkCurrentPlayerWins()) {
         this.win()
@@ -333,7 +335,7 @@ export default {
     checkCurrentPlayerWins() {
       const state = Object.values(this.pinsState)
       const debug = txt => {
-        console.log(txt)
+        //console.log(txt)
       }
       const checkingPlayer = this.turnPlayer
       const horizontal1 = () => {
@@ -511,7 +513,7 @@ export default {
         return diagonalHorizontal() || diagonalVertical() || diagonalVertical3d()
       }
       if (horizontal() || vertical() || diagonal()) {
-        console.log('STATE', state)
+        // console.log('STATE', state)
         return true
       }
       return false
@@ -720,9 +722,6 @@ export default {
       this.allowRender = true;
       this.initConfig()
       this.initScene()
-      // setTimeout(() => {
-      //   this.finish()
-      // }, 2000)
     },
     reset() {
       for (let i = 0; i < this.sceneRings.length; i++) {
@@ -730,24 +729,6 @@ export default {
       }
       this.initPinsState()
       this.isWin = false
-    },
-    finish() {
-      this.allowRender = false
-      this.isWin = false
-      this.$store.commit('player/setTurnPlayer', 1)
-      window.cancelAnimationFrame(this.render)
-      window.removeEventListener('pointermove', this.onPointerMove)
-      const canvas = document.createElement('canvas')
-      canvas.setAttribute('id', 'canvas')
-      document.getElementById('canvas').replaceWith(canvas)
-      // if (this.scene) {
-      //   console.log('12312312312312312312---', this.scene.children.length)
-      //   while (this.scene.children.length > 0) {
-      //     // console.log()
-      //     this.scene.remove(this.scene.children[0]);
-      //   }
-      // }
-      this.initConfig()
     }
   },
   created() {

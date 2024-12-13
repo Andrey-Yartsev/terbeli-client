@@ -1,63 +1,96 @@
 <template>
   <GameIntro
       v-if="!registeredName"
-      @registerPlayer="sendRegisterPlayer"
+      @registerPlayer="registerPlayer"
   />
-  <GameControls
-      v-else
-      :showTouchPutRingButton="showTouchPutRingButton"
-      ref="gameControls"
-      @playWith="sendPlayWith"
-      @leaveGame="leaveGame"
-      @newGameWithSameOpponent="newGameWithSameOpponent"
-      @touchPutRing="touchPutRing"
-  />
-  <RenderMain
-      :is-touch-device="true"
-      ref="renderMain"
-      @addedRing="sendAddedRing"
-      @setTouchPinPointer="setTouchPinPointer"
-      @win="win"
-  />
-  <!--  &lt;!&ndash; @switchPlayer="sendSwitchPlayer" &#45;&#45; ^ &ndash;&gt;-->
+  <template v-else>
+    <GameControls
+        :showTouchPutRingButton="showTouchPutRingButton"
+        ref="gameControls"
+        @playWith="sendPlayWith"
+        @leaveGame="leaveGame"
+        @newGameWithSameOpponent="newGameWithSameOpponent"
+        @touchPutRing="touchPutRing"
+        @restart="resetGame"
+    />
+    <RenderMain
+        v-if="inGame"
+        :is-touch-device="true"
+        ref="renderMain"
+        @addedRing="sendAddedRing"
+        @setTouchPinPointer="setTouchPinPointer"
+        @win="win"
+    />
+    <!--  &lt;!&ndash; @switchPlayer="sendSwitchPlayer" &#45;&#45; ^ &ndash;&gt;-->
+  </template>
   <WsInteraction
       ref="wsInteraction"
+      :ws="ws"
+      @aaa="aaa"
       @addedRing="renderPutRing"
-      @leaveGame="leaveGame"
+      @leftGame="_leaveGame"
       @opponentWin="gameControlsLose"
-      @resetRender="resetRender"
+      @resetGame="_resetGame"
   />
+  <Aaa @some="some" />
 </template>
 
 <script>
-import RenderMain from "@/components/render/RenderMain.vue";
-import WsInteraction from "@/components/ws/WsInteraction.vue";
-import GameControls from "@/components/gameControls/GameControls.vue";
-import GameIntro from "@/components/gameIntro/GameIntro.vue";
+import RenderMain from '@/components/render/RenderMain.vue'
+import WsInteraction from '@/components/ws/WsInteraction.vue'
+import GameControls from '@/components/gameControls/GameControls.vue'
+import GameIntro from '@/components/gameIntro/GameIntro.vue'
+import toast from '@/mixins/toast.js'
 
 export default {
   components: {GameIntro, GameControls, RenderMain, WsInteraction},
+  mixins: [toast],
+  props: {
+    ws: Object
+  },
   data() {
     return {
-      showTouchPutRingButton: false
+      debugMode: false,
+      socketConnected: false,
+      showTouchPutRingButton: false,
     }
   },
   computed: {
     registeredName() {
       return this.$store.state.player.user.name
     },
-    startGame() {
-      return this.$store.state.player.startGame
-    }
+    gameStarted() {
+      return this.$store.state.player.gameStarted
+    },
+    inGame() {
+      return this.$store.getters['player/inGame']
+    },
   },
   watch: {
-    startGame() {
-      this.$refs.renderMain.start()
+    inGame() {
+      setTimeout(() => {
+        if (this.$refs.renderMain) {
+          this.$refs.renderMain.start()
+        }
+      }, 100)
     }
   },
   methods: {
-    sendRegisterPlayer(name) {
-      this.$refs.wsInteraction.registerPlayer(name)
+    registerPlayer() {
+      this.$refs.wsInteraction.registerPlayer()
+    },
+    resetGame() {
+      this._resetGame()
+      this.$refs.wsInteraction.resetGame()
+    },
+    _resetGame() {
+      this.$refs.renderMain.reset()
+      this.$store.commit('player/reset')
+      this.$refs.gameControls.showWinModal = false
+      this.toast('Игра обнулена', {autoClose: 6000})
+    },
+    leaveGame() {
+      this.$refs.wsInteraction.leaveGame()
     },
     sendPlayWith(name) {
       this.$refs.wsInteraction.playWith(name)
@@ -71,20 +104,11 @@ export default {
     renderPutRing({turnPlayer, pinN}) {
       this.$refs.renderMain.putRingWs(turnPlayer, pinN)
     },
-    leaveGame() {
-      this.$refs.renderMain.finish()
-      this.$refs.wsInteraction.leaveGame()
-    },
     newGameWithSameOpponent() {
       this.$refs.wsInteraction.resetRender()
       this.$refs.renderMain.finish()
       this.$refs.renderMain.start()
       // this.$refs.wsInteraction.leaveGame()
-    },
-    resetRender() {
-      this.$refs.renderMain.finish()
-      this.$refs.renderMain.start()
-      this.$refs.gameControls.hideModal()
     },
     win() {
       this.$refs.wsInteraction.win()
@@ -102,7 +126,24 @@ export default {
     touchPutRing() {
       this.$refs.renderMain.touchPutRing()
       this.showTouchPutRingButton = false
-    }
+    },
+    // excludeFromOnline() {
+    //   this.$refs.wsInteraction.excludeFromOnline()
+    // },
+    // includeToOnline() {
+    //   this.$refs.wsInteraction.includeToOnline()
+    // }
+  },
+  beforeUnmount() {
+    this.leaveGame()
+    // this.excludeFromOnline()
+  },
+  created() {
+    // this.socketConnected = this.ws.connected
+    // this.ws.onConnect = () => {
+    //   this.socketConnected = true
+    //   this.registerPlayer()
+    // }
   }
 };
 </script>

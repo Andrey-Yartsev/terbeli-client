@@ -46,7 +46,6 @@ export default {
       this.render.reset()
     },
     restart() {
-      //this.resetScreen()
       this.lessonN = 1
       this.resetScreen()
       this.start()
@@ -61,7 +60,7 @@ export default {
       }
       this.render.putRing(pinN)
       this.$store.commit('player/switchPlayerN')
-      await sleep(500)
+      await sleep(700)
     },
     async lesson(n) {
       if (this.stopped) {
@@ -83,7 +82,7 @@ export default {
       if (this.onlyLesson) {
         return
       }
-      const lessonDelay = 2
+      const lessonDelay = 5
       //await sleep(2000)
       this.toast('Через ' + lessonDelay + 'с. начнётся следущий урок')
       await sleep(lessonDelay * 1000)
@@ -176,10 +175,11 @@ export default {
       return r
     }
   },
-  mounted() {
+  async mounted() {
     this.lessonN = this.onlyLesson || 1
     this.render = this.$refs.render
     this.render.start()
+    await sleep(1000)
     this.start()
   },
   beforeUnmount() {

@@ -2,36 +2,38 @@
   <div class="modal" v-if="showWinModal">
     <div class="content">
       Ты {{ isWin ? 'выиграл' : 'проиграл' }}! Ты <span v-html="whoAmI"></span>
-      <button class="button" @click="restart">Закрыть и перезагрузить</button>
+      <button class="button" @click="restart">Играть ещё раз</button>
+      <button class="button" @click="leaveGame">Выйти</button>
       <!-- <button>Закрыть и покинуть оппонента</button> -->
     </div>
   </div>
   <div class="game-controls-group">
-    <GameControlsMe
+    <GameControlsHeader
         @registerPlayer="registerPlayer"
         @leaveGame="leaveGame"
         @newGame="newGame"
+        @restart="restart"
     />
     <GameControlsStatus/>
     <!-- <div class="game-controls debug"><pre class="item">{{ state }}</pre></div>-->
     <!-- <div class="game-controls debug" style="left:430px"><pre class="item">{{ getters }}</pre></div>-->
     <GameControlsOnlinePlayers @playWith="playWith"/>
   </div>
-  <GameControlsPairs/>
+
   <div v-if="showTouchPutRingButton" class="game-controls touch-controls show">
-    <button class="button" @click="touchPutRing">Поставить</button>
+    <button class="button but" @click="touchPutRing">Поставить</button>
   </div>
 </template>
 
 <script>
-import GameControlsMe from './GameControlsMe.vue'
+import GameControlsHeader from './GameControlsHeader.vue'
 import GameControlsStatus from './GameControlsStatus.vue'
 import GameControlsOnlinePlayers from "@/components/gameControls/GameControlsOnlinePlayers.vue";
 import GameControlsPairs from "@/components/gameControls/GameControlsPairs.vue";
 import isTouchDevice from "@/mixins/isTouchDevice.js";
 
 export default {
-  components: {GameControlsMe, GameControlsStatus, GameControlsOnlinePlayers, GameControlsPairs},
+  components: {GameControlsHeader, GameControlsStatus, GameControlsOnlinePlayers, GameControlsPairs},
   props: {
     showTouchPutRingButton: Boolean
   },
@@ -68,7 +70,8 @@ export default {
   },
   methods: {
     restart() {
-      window.location.reload()
+      this.$emit('restart')
+      this.showWinModal = false
     },
     registerPlayer(name) {
       this.$emit('registerPlayer', name)
