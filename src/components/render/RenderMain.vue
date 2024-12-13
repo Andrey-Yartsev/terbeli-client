@@ -144,6 +144,9 @@ export default {
       return !this.pinsState[pinN] && this.pinsState[pinN].length < 4
     },
     canPutRing(pinN, toast = false) {
+      if (this.demoMode) {
+        return true
+      }
       if (!this.$store.getters['player/isMyTurn']) {
         if (toast) {
           this.toast('Не твой ход')
@@ -707,9 +710,11 @@ export default {
         this.sceneInitialized = true
       }, 1500)
 
-      this.renderer.domElement.addEventListener('click', this.onClick)
-      this.renderer.domElement.addEventListener('touchstart', this.onTouchstart)
-      this.renderer.domElement.addEventListener('touchend', this.onTouchend)
+      if (!this.demoMode) {
+        this.renderer.domElement.addEventListener('click', this.onClick)
+        this.renderer.domElement.addEventListener('touchstart', this.onTouchstart)
+        this.renderer.domElement.addEventListener('touchend', this.onTouchend)
+      }
     },
     start() {
       this.allowRender = true;

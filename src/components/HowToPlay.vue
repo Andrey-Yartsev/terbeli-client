@@ -2,16 +2,18 @@
   <div class="game-controls-group">
     <div class="game-controls top">
       <div class="me">
-        <a href="/" class="menu">В игру</a>
+        <router-link to="/" class="menu">В игру</router-link>
         <div class="logo"><img src="@/assets/img/logo.png"></div>
         <button class="button" @click.prevent="restart">Заново</button>
       </div>
     </div>
     <div class="game-controls status">
+      <span v-if="lessonsOver">Уроки закончились</span>
+      <span v-if="!lessonsOver">Урок №{{ lessonN }}</span>
       <span class="item turn-title" :class="turnTitleClass">ходит {{ color }}</span>
     </div>
   </div>
-  <RenderMain ref="render" :showPinDigits="true" :demoMode="true"/>
+  <RenderMain ref="render" :showPinDigits="false" :demoMode="true"/>
 </template>
 
 <script>
@@ -29,21 +31,30 @@ export default {
     return {
       lessonsOver: false,
       onlyLesson: 0,
-      hideTurnTitle: false
+      hideTurnTitle: false,
+      lessonN: 1,
+      stopped: false
     }
   },
   methods: {
     async start() {
-      await this.lesson(this.v)
+      await this.lesson(this.lessonN)
+    },
+    resetScreen() {
+      this.hideTurnTitle = false
+      this.lessonsOver = false
+      this.render.reset()
     },
     restart() {
-      this.hideTurnTitle = false
-      this.render.reset()
+      //this.resetScreen()
+      this.lessonN = 1
+      this.resetScreen()
       this.start()
-      //localStorage.setItem('lessonN', 1)
-      // window.location.reload()
     },
     async put(pinN) {
+      if (this.stopped) {
+        return
+      }
       if (this.render.isWin) {
         this.toast(this.color + ' пытался сходить после победы')
         return
@@ -53,24 +64,32 @@ export default {
       await sleep(500)
     },
     async lesson(n) {
+      if (this.stopped) {
+        return
+      }
       if (!this.onlyLesson && !this['v' + n]) {
         this.toast('Уроки закончились')
         this.lessonsOver = true
         this.hideTurnTitle = true
         return
       }
+      this.resetScreen()
       this.$store.commit('player/setTurnPlayer', 1)
       await this['v' + n]()
+      if (this.stopped) {
+        return
+      }
       this.hideTurnTitle = true
       if (this.onlyLesson) {
         return
       }
-      const lessonDelay = 5
-      await sleep(2000)
+      const lessonDelay = 2
+      //await sleep(2000)
       this.toast('Через ' + lessonDelay + 'с. начнётся следущий урок')
       await sleep(lessonDelay * 1000)
-      localStorage.setItem('lessonN', this.v + 1)
-      window.location.reload()
+      this.lessonN++
+      this.resetScreen()
+      this.start()
     },
     async v1() {
       await this.put(13)
@@ -158,10 +177,13 @@ export default {
     }
   },
   mounted() {
-    this.v = this.onlyLesson || parseInt(localStorage.getItem('lessonN')) || 1
+    this.lessonN = this.onlyLesson || 1
     this.render = this.$refs.render
     this.render.start()
     this.start()
+  },
+  beforeUnmount() {
+    this.stopped = true
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="game-controls top">
-    <a href="/how-to-play" class="menu">Как играть</a>
+    <router-link to="/how-to-play" class="menu">Как играть</router-link>
     <div class="me" :style="{
     opacity: serverConnected ? 1 : 0
   }">

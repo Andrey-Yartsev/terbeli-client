@@ -6,7 +6,8 @@ export default {
       toast(title, {
         theme: 'dark',
         type: 'info',
-        position: toast.POSITION.BOTTOM_LEFT
+        position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 1500
       })
     }
   }
