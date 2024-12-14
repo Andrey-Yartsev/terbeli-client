@@ -20,7 +20,6 @@ const actions = {
     commit('setGameStarted', true)
   },
   leaveGame({commit}) {
-    console.log('JJJ')
     commit('setName', null)
     commit('reset')
   }

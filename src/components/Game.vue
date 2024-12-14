@@ -8,7 +8,7 @@
         :showTouchPutRingButton="showTouchPutRingButton"
         ref="gameControls"
         @playWith="sendPlayWith"
-        @leaveGame="leaveGame"
+        @leavePlayerGame="leavePlayerGame"
         @newGameWithSameOpponent="newGameWithSameOpponent"
         @touchPutRing="touchPutRing"
         @restart="resetGame"
@@ -26,9 +26,7 @@
   <WsInteraction
       ref="wsInteraction"
       :ws="ws"
-      @aaa="aaa"
       @addedRing="renderPutRing"
-      @leftGame="_leaveGame"
       @opponentWin="gameControlsLose"
       @resetGame="_resetGame"
   />
@@ -91,6 +89,10 @@ export default {
     },
     leaveGame() {
       this.$refs.wsInteraction.leaveGame()
+    },
+    leavePlayerGame() {
+      this._resetGame()
+      this.$refs.wsInteraction.leavePlayerGame()
     },
     sendPlayWith(name) {
       this.$refs.wsInteraction.playWith(name)

@@ -11,18 +11,10 @@ const _toast = title => {
 
 export default class Ws {
   
-  constructor(store, onConnect) {
+  constructor(store) {
     this.store = store
-    this.events = {}
+    this.emit = null;
     this.init()
-  }
-  addEvent(name, callback) {
-    this.events[name] = callback
-  }
-  emit(name, params) {
-    if (this.events[name]) {
-      this.events[name](params)
-    }
   }
   send(data) {
     this.socket.send(JSON.stringify(data))
@@ -84,7 +76,8 @@ export default class Ws {
         this.emit('opponentWin')
       },
       playerGone: ({playerName}) => {
-        _toast(playerName + ' левнул')
+        //_toast(playerName + ' левнул')
+        //if (this.store.getters['player/opponent'])
       },
       resetGame: ({playerName}) => {
         if (playerName === registeredName()) {
@@ -99,7 +92,7 @@ export default class Ws {
       console.log('[from server]>', data)
       if (!wsOnMessageActions[data.type]) {
         console.log(data)
-        //alert('wsOnMessageAction "' + data.type + '" does not exists')
+        // alert('wsOnMessageAction "' + data.type + '" does not exists')
         return
       }
       wsOnMessageActions[data.type](data.data)

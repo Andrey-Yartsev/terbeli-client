@@ -8,6 +8,9 @@ export default {
   },
   created() {
     this.socket = this.ws.socket
+    this.ws.emit = (evnt, params) => {
+      this.$emit(evnt, params)
+    }
   },
   computed: {
     turnPlayer() {
@@ -48,6 +51,11 @@ export default {
     leaveGame() {
       this.send({
         type: 'leaveGame'
+      })
+    },
+    leavePlayerGame() {
+      this.send({
+        type: 'leavePlayerGame'
       })
     },
     // excludeFromOnline() {

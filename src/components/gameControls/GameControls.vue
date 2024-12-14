@@ -10,7 +10,7 @@
   <div class="game-controls-group">
     <GameControlsHeader
         @registerPlayer="registerPlayer"
-        @leaveGame="leaveGame"
+        @leavePlayerGame="leavePlayerGame"
         @newGame="newGame"
         @restart="restart"
     />
@@ -82,8 +82,8 @@ export default {
       }
       this.$emit('playWith', name)
     },
-    leaveGame() {
-      this.$emit('leaveGame')
+    leavePlayerGame() {
+      this.$emit('leavePlayerGame')
     },
     showWin() {
       this.showWinModal = true

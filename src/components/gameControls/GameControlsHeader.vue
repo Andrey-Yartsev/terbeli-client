@@ -9,7 +9,7 @@
       <template v-if="inGame">
         <!--<button class="button" @click.prevent="leaveGame">Уйти</button>-->
         <button class="button" @click.prevent="restart">Переиграть</button>
-        <button class="button" @click.prevent="leaveGame">Выйти</button>
+        <button class="button" @click.prevent="leavePlayerGame">Выйти</button>
       </template>
     </div>
   </div>
@@ -70,8 +70,8 @@ export default {
     restart() {
       this.$emit('restart')
     },
-    leaveGame() {
-      this.$emit('leaveGame')
+    leavePlayerGame() {
+      this.$emit('leavePlayerGame')
     },
     newGame() {
       this.$emit('newGame')
