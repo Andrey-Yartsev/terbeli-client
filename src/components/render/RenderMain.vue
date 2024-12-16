@@ -713,9 +713,12 @@ export default {
       }, 1500)
 
       if (!this.demoMode) {
-        this.renderer.domElement.addEventListener('click', this.onClick)
-        this.renderer.domElement.addEventListener('touchstart', this.onTouchstart)
-        this.renderer.domElement.addEventListener('touchend', this.onTouchend)
+        if (this.isMobile()) {
+          this.renderer.domElement.addEventListener('touchstart', this.onTouchstart)
+          this.renderer.domElement.addEventListener('touchend', this.onTouchend)
+        } else {
+          this.renderer.domElement.addEventListener('click', this.onClick)
+        }
       }
     },
     start() {
@@ -729,6 +732,13 @@ export default {
       }
       this.initPinsState()
       this.isWin = false
+    },
+    isMobile() {
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   created() {

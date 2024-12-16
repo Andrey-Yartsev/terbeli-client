@@ -9,7 +9,7 @@
           <button class="button" v-show="name" @click.prevent="registerPlayerByName">Войти в игру</button>
         </div>
       </div>
-      <div v-else>Ожидаем подключение к серверу, подождите</div>
+      <div v-else style="margin-top: 40px">Ожидаем подключение к серверу, подождите</div>
     </div>
   </div>
 </template>
