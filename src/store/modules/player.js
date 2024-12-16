@@ -61,12 +61,13 @@ const getters = {
     if (state.user.name) {
       delete online[state.user.name]
     }
-    // console.log('online', online)
+    console.log('online', online)
+    console.log('playing pairs', state.pairs)
     state.pairs.forEach(pair => {
       delete online[pair[0]]
       delete online[pair[1]]
     })
-    // console.log('online 2', online)
+    console.log('online 2', online)
     return Object.keys(online)
   },
   currentPair(state) {

@@ -25,7 +25,7 @@ export default {
       name: '',
       animate: false,
       showControls: false,
-      autostart: false
+      autostart: true
     }
   },
   computed: {
@@ -62,7 +62,9 @@ export default {
       this.$refs.name.focus()
     }, 1000)
     if (this.autostart) {
-      this.registerPlayer()
+      setTimeout(() => {
+        this.registerPlayer()
+      }, 2000)
     }
   }
 }

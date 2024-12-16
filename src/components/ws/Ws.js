@@ -75,10 +75,6 @@ export default class Ws {
       opponentWin: () => {
         this.emit('opponentWin')
       },
-      playerGone: ({playerName}) => {
-        //_toast(playerName + ' левнул')
-        //if (this.store.getters['player/opponent'])
-      },
       resetGame: ({playerName}) => {
         if (playerName === registeredName()) {
           // себя уже прорезетили
