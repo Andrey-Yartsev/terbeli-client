@@ -2,7 +2,7 @@
   <div class="game-controls online" v-if="!opponentName && readyToPlay.length">
     <div class="item"><b>Игроки онлайн</b> (ожидают тебя):</div>
     <div class="item player-name" v-for="name in readyToPlay" :key="name">
-      {{ name }}
+      👨 {{ name }}
       <span v-if="registeredName">—
         <a
             href="#"

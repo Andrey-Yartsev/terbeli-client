@@ -21,9 +21,17 @@ export default {
     send(data) {
       this.ws.send(data)
     },
-    registerPlayer(name) {
+    registerPlayer() {
       this.send({
         type: 'registerPlayer'
+      })
+    },
+    registerPlayerByName(name) {
+      this.send({
+        type: 'registerPlayerByName',
+        data: {
+          name
+        }
       })
     },
     playWith(name) {

@@ -97,6 +97,12 @@ export default class Ws {
       }
       wsOnMessageActions[data.type](data.data)
     }
+    // socket.onclose = event => {
+    //   _toast('Попробуем ещё раз через 30с.')
+    //   setTimeout(() => {
+    //     this.init()
+    //   }, 30000)
+    // }
     this.socket = socket
   }
 

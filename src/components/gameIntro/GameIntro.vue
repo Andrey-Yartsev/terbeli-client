@@ -4,12 +4,12 @@
       <img src="@/assets/img/logo.png" ref="logo">
       <div v-if="serverConnected" class="controls" :class="{show: showControls}">
         <div class="body">
-          <button class="button" v-show="step===1" @click.prevent="begin">Начать</button>
-          <input ref="name" v-show="step===2" v-model="name" class="item" placeholder="Имя"
-                 @keyup.enter="registerPlayer"/>
-          <button class="button" v-show="step===2 && name" @click.prevent="registerPlayer">Войти в игру</button>
+          <input ref="name" v-model="name" class="item" placeholder="Имя"
+                 @keyup.enter="registerPlayerByName"/>
+          <button class="button" v-show="name" @click.prevent="registerPlayerByName">Войти в игру</button>
         </div>
       </div>
+      <div v-else>Ожидаем подключение к серверу, подождите</div>
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
       name: '',
       animate: false,
       showControls: false,
-      autostart: true
+      autostart: false
     }
   },
   computed: {
@@ -46,18 +46,11 @@ export default {
     },
   },
   methods: {
-    async begin() {
-      return new Promise((accept) => {
-        this.step = 2
-        setTimeout(() => {
-          this.$refs.name.focus()
-          this.name = 'ЗАПОЛНИ'
-          accept()
-        }, 100)
-      })
+    registerPlayerByName() {
+      this.$emit('registerPlayerByName', this.name)
     },
     registerPlayer() {
-      this.$emit('registerPlayer', this.name)
+      this.$emit('registerPlayer')
     },
   },
   async mounted() {
@@ -66,9 +59,9 @@ export default {
     }, 500)
     setTimeout(() => {
       this.showControls = true
+      this.$refs.name.focus()
     }, 1000)
     if (this.autostart) {
-      await this.begin()
       this.registerPlayer()
     }
   }

@@ -2,6 +2,7 @@
   <GameIntro
       v-if="!registeredName"
       @registerPlayer="registerPlayer"
+      @registerPlayerByName="registerPlayerByName"
   />
   <template v-else>
     <GameControls
@@ -30,7 +31,6 @@
       @opponentWin="gameControlsLose"
       @resetGame="_resetGame"
   />
-  <Aaa @some="some" />
 </template>
 
 <script>
@@ -76,6 +76,9 @@ export default {
   methods: {
     registerPlayer() {
       this.$refs.wsInteraction.registerPlayer()
+    },
+    registerPlayerByName(name) {
+      this.$refs.wsInteraction.registerPlayerByName(name)
     },
     resetGame() {
       this._resetGame()

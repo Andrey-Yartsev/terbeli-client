@@ -95,7 +95,7 @@ const getters = {
     return getters.opponent ? getters.opponent.name : null
   },
   inGame(state, getters) {
-    return state.user.name && getters.opponentName
+    return (state.user.name && getters.opponentName)
   },
   turnPlayerName(state, getters) {
     const i = state.turnPlayer - 1

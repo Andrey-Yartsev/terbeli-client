@@ -1,14 +1,14 @@
 <template>
   <div class="game-controls top">
     <router-link to="/how-to-play" @click.prevent="goHtp" class="menu">Как играть</router-link>
-    <div v-if="registeredName" class="my-name">{{ registeredName }}</div>
+    <div v-if="registeredName" class="my-name">👨 {{ registeredName }}</div>
     <div class="me" :style="{
     opacity: serverConnected ? 1 : 0
   }">
       <div class="logo"><img src="@/assets/img/logo.png"></div>
       <template v-if="inGame">
         <!--<button class="button" @click.prevent="leaveGame">Уйти</button>-->
-        <button class="button" @click.prevent="restart">Переиграть</button>
+        <button class="button" @click.prevent="restart">Заново</button>
         <button class="button" @click.prevent="leavePlayerGame">Выйти</button>
       </template>
     </div>
@@ -77,13 +77,13 @@ export default {
       this.$emit('newGame')
     },
     goHtp() {
-      if (this.inGame) {
+      //if (this.inGame) {
         if (confirm('Текущая игра будет закончена. Вы уверены, что хотите перейти?')) {
           this.$router.push('/how-to-play')
         }
-      } else {
-        this.$router.push('/how-to-play')
-      }
+      // } else {
+      //   this.$router.push('/how-to-play')
+      // }
     }
   }
 }
