@@ -3,7 +3,7 @@
     <div class="content">
       Ты {{ isWin ? 'выиграл' : 'проиграл' }}! Ты <span v-html="whoAmI"></span>
       <button class="button" @click="restart">Играть ещё раз</button>
-      <button class="button" @click="leaveGame">Выйти</button>
+      <button class="button" @click="leavePlayerGame">Выйти</button>
       <!-- <button>Закрыть и покинуть оппонента</button> -->
     </div>
   </div>

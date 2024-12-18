@@ -26,7 +26,7 @@ export default {
   // ringOneStepYShift: 0.5,
   //sceneGeometries: [],
   props: {
-    showPinDigits: false,
+    showPinDigits: true,
     demoMode: {
       type: Boolean,
       default: false
