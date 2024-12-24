@@ -713,9 +713,12 @@ export default {
       }, 1500)
 
       if (!this.demoMode) {
+        if (this.isMobile()) {
           this.renderer.domElement.addEventListener('touchstart', this.onTouchstart)
-        this.renderer.domElement.addEventListener('touchend', this.onTouchend)
-        this.renderer.domElement.addEventListener('click', this.onClick)
+          this.renderer.domElement.addEventListener('touchend', this.onTouchend)
+        } else {
+          this.renderer.domElement.addEventListener('click', this.onClick)
+        }
       }
     },
     start() {

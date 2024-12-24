@@ -17,6 +17,8 @@ const actions = {
     commit('setWinPlayer', n)
   },
   startGame({commit}) {
+    const audio = new Audio('/sound/bell.wav')
+    audio.play()
     commit('setGameStarted', true)
   },
   leaveGame({commit}) {

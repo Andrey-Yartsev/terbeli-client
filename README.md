@@ -1,2 +1,1 @@
-- Регистрация игрока
-  - Game:created
+https://terbeli.masted.ru
