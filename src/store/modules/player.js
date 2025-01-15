@@ -105,7 +105,6 @@ const getters = {
     return getters.currentPair ? getters.currentPair[i] : null
   },
   isMyTurn(state, getters) {
-    console.log(getters.turnPlayerName)
     return getters.turnPlayerName && state.user.name === getters.turnPlayerName
   }
 }

@@ -263,7 +263,6 @@ export default {
         console.log('cant click moving')
         return
       }
-      console.log('im happy now')
       this.putRing(this.currentHoveredPin.userData.pinN)
     },
     getTouchMouse(event) {
@@ -520,6 +519,7 @@ export default {
     },
     win() {
       this.isWin = true
+      this.$emit('addedRing', this.movingRing.userData.pinN)
       this.$emit('win')
       this.toast('Победа')
     },
