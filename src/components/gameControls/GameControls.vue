@@ -29,7 +29,7 @@
 import GameControlsHeader from './GameControlsHeader.vue'
 import GameControlsStatus from './GameControlsStatus.vue'
 import GameControlsOnlinePlayers from "@/components/gameControls/GameControlsOnlinePlayers.vue";
-import GameControlsPairs from "@/components/gameControls/GameControlsPairs.vue";
+import GameControlsPairs from "@/components/gameControls/GameControlsHowPlays.vue";
 import isTouchDevice from "@/mixins/isTouchDevice.js";
 
 export default {

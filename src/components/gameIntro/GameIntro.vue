@@ -63,6 +63,7 @@ export default {
     }, 1000)
     if (this.autostart) {
       setTimeout(() => {
+        this.toast('Ваше имя выбрано случайно')
         this.registerPlayer()
       }, 2000)
     }
