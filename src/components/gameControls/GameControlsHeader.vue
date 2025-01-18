@@ -78,9 +78,8 @@ export default {
     },
     goHtp() {
       //if (this.inGame) {
-        if (confirm('Текущая игра будет закончена. Вы уверены, что хотите перейти?')) {
-          this.$router.push('/how-to-play')
-        }
+      alert('Текущая игра будет закончена')
+      this.$router.push('/how-to-play')
       // } else {
       //   this.$router.push('/how-to-play')
       // }
