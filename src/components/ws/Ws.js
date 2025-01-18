@@ -34,9 +34,9 @@ export default class Ws {
       _toast('Связь с сервером установлена')
       if (this.store.state.player.autostart) {
         setTimeout(() => {
-        this.send({
-          type: 'registerPlayer'
-        })
+          this.send({
+            type: 'registerPlayer'
+          })
         }, 5000)
       }
     }
@@ -48,7 +48,7 @@ export default class Ws {
         this.store.commit('player/setServerConnected', false)
       },
       playerRegistered: ({name}) => {
-         this.store.commit('player/setName', name)
+        this.store.commit('player/setName', name)
       },
       updatePlayersList: list => {
         this.store.commit('player/setOnlineList', list)

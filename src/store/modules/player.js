@@ -1,5 +1,6 @@
 const state = {
   serverConnected: false,
+  introPassed: false,
   autostart: true,
   user: {
     name: null
@@ -23,13 +24,16 @@ const actions = {
     commit('setGameStarted', true)
   },
   leaveGame({commit}) {
-    commit('setName', null)
+    // commit('setName', null)
     commit('reset')
   }
 }
 const mutations = {
   setServerConnected(state, flag) {
     state.serverConnected = flag
+  },
+  setIntroPassed(flag) {
+    state.introPassed = flag
   },
   setName(state, name) {
     state.user.name = name

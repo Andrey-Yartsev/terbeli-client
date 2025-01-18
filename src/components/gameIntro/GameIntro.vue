@@ -1,10 +1,10 @@
 <template>
   <div class="intro-wrapper">
     <div class="intro" v-if="!inGame" :class="{animate}">
-      <img src="@/assets/img/logo.png" ref="logo">
+      <img src="@/assets/img/logo.png" ref="logo" @click="startMusic">
       <div v-if="serverConnected" class="controls" :class="{show: showControls}">
         <div class="body">
-          <input ref="name" v-model="name" class="item" placeholder="Имя" v-show="!autostart"
+          <input ref="name" v-model="name" class="item" placeholder="Имя" v-if="!autostart"
                  @keyup.enter="registerPlayerByName"/>
           <button class="button" v-show="name" @click.prevent="registerPlayerByName">Войти в игру</button>
         </div>
@@ -52,6 +52,10 @@ export default {
     registerPlayerByName() {
       this.$emit('registerPlayerByName', this.name)
     },
+    startMusic() {
+      const audio = new Audio('/sound/bg/bg1.mp3')
+      audio.play()
+    }
   },
   async mounted() {
     setTimeout(() => {

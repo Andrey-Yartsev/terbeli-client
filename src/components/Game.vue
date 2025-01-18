@@ -1,6 +1,6 @@
 <template>
   <GameIntro
-      v-if="!registeredName"
+      v-if="!registeredName && !introPassed"
       @registerPlayer="registerPlayer"
       @registerPlayerByName="registerPlayerByName"
   />
@@ -56,6 +56,9 @@ export default {
   computed: {
     registeredName() {
       return this.$store.state.player.user.name
+    },
+    introPassed() {
+      return this.$store.state.player.introPassed
     },
     gameStarted() {
       return this.$store.state.player.gameStarted
