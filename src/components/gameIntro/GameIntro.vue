@@ -4,7 +4,7 @@
       <img src="@/assets/img/logo.png" ref="logo">
       <div v-if="serverConnected" class="controls" :class="{show: showControls}">
         <div class="body">
-          <input ref="name" v-model="name" class="item" placeholder="Имя"
+          <input ref="name" v-model="name" class="item" placeholder="Имя" v-show="!autostart"
                  @keyup.enter="registerPlayerByName"/>
           <button class="button" v-show="name" @click.prevent="registerPlayerByName">Войти в игру</button>
         </div>
@@ -32,6 +32,9 @@ export default {
     serverConnected() {
       return this.$store.state.player.serverConnected
     },
+    autostart() {
+      return this.$store.state.player.autostart
+    },
     inGame() {
       return this.registeredName && this.opponentName
     },
@@ -49,9 +52,6 @@ export default {
     registerPlayerByName() {
       this.$emit('registerPlayerByName', this.name)
     },
-    registerPlayer() {
-      this.$emit('registerPlayer')
-    },
   },
   async mounted() {
     setTimeout(() => {
@@ -59,13 +59,10 @@ export default {
     }, 500)
     setTimeout(() => {
       this.showControls = true
-      this.$refs.name.focus()
+      if (this.$refs.name) this.$refs.name.focus()
     }, 1000)
-    if (this.autostart) {
-      setTimeout(() => {
-        this.toast('Ваше имя выбрано случайно')
-        this.registerPlayer()
-      }, 2000)
+    if (!this.autostart) {
+      this.registerPlayerByName()
     }
   }
 }

@@ -1,5 +1,6 @@
 const state = {
   serverConnected: false,
+  autostart: true,
   user: {
     name: null
   },

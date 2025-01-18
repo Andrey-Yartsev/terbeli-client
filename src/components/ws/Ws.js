@@ -10,24 +10,35 @@ const _toast = title => {
 }
 
 export default class Ws {
-  
+
   constructor(store) {
     this.store = store
     this.emit = null;
     this.init()
   }
+
   send(data) {
     this.socket.send(JSON.stringify(data))
   }
+
   init() {
     const registeredName = () => {
       return this.store.state.player.user.name
     }
     _toast('Установка связи')
     const socket = new WebSocket(import.meta.env.VITE_SERVER_URL)
+
+
     socket.onopen = () => {
       this.store.commit('player/setServerConnected', true)
       _toast('Связь с сервером установлена')
+      if (this.store.state.player.autostart) {
+        setTimeout(() => {
+        this.send({
+          type: 'registerPlayer'
+        })
+        }, 5000)
+      }
     }
     socket.onerror = () => {
       _toast('Ошибка соединения с сервером ' + import.meta.env.VITE_SERVER_URL)
@@ -37,7 +48,7 @@ export default class Ws {
         this.store.commit('player/setServerConnected', false)
       },
       playerRegistered: ({name}) => {
-        this.store.commit('player/setName', name)
+         this.store.commit('player/setName', name)
       },
       updatePlayersList: list => {
         this.store.commit('player/setOnlineList', list)
@@ -93,6 +104,7 @@ export default class Ws {
       }
       wsOnMessageActions[data.type](data.data)
     }
+
     // socket.onclose = event => {
     //   _toast('Попробуем ещё раз через 30с.')
     //   setTimeout(() => {
